@@ -16,9 +16,9 @@ from utils import print_config, save_config, load_config, test_ner
 from data_utils import load_word2vec, create_input, input_from_line, BatchManager
 
 flags = tf.app.flags
-# 默认运行时清空上一次训练相关结果文件，如果不需要修改为False
+# train=True&&clean=True表示训练时清空上一次训练相关结果文件
+# train=False表示不训练，clean设置无所谓，但是必须要有之前训练后生成的相关文件
 flags.DEFINE_boolean("clean",       True,      "clean train folder")
-# 默认运行时进行训练，如果已经训练好修改为False
 flags.DEFINE_boolean("train",       True,      "Wither train the model")
 # configurations for the model
 flags.DEFINE_integer("seg_dim",     20,         "Embedding size for segmentation, 0 if not used")
@@ -207,10 +207,10 @@ def evaluate_line():
             #     print(result)
             # except Exception as e:
             #     logger.info(e)
-
-                line = input("请输入测试句子:")
-                result = model.evaluate_line(sess, input_from_line(line, char_to_id), id_to_tag)
-                print(result)
+            # 可以修改测试输入，详见model.evaluate方法
+            line = input("请输入测试句子:")
+            result = model.evaluate_line(sess, input_from_line(line, char_to_id), id_to_tag)
+            print(result)
 
 
 def main(_):
